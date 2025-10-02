@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Route;
+use App\Models\Post;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,3 +18,22 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
+
+
+    
+
+    // Test Model
+    Route::get('/test-model', function() {
+        $data = Post::all();
+        return $data;
+    });
+
+    Route::get('/create-data-post', function() {
+        $data = Post::create([
+            'title' => 'Belajar PHP',
+            'content' => 'Lorem ipsum'
+        ]);
+        return $data;
+    });
+
+

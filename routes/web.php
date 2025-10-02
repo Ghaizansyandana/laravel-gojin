@@ -1,13 +1,18 @@
 <?php
-
-use Illuminate\Support\Facades\Route;
+// memanggil class Route
+use Illuminate\Support\Facades\Route; // memanggil class Route
+use App\Http\Controllers\MyController; // controllernya harus di import dulu / di panggil
+use App\Http\Controllers\PostController; // memanggil controller PostController
 
 Route::get('/', function(){
+    // memanggil view welcome.blade.php
     return view('welcome');
 });
 
 // basic 
+// menampilkan teks ke browser
 Route::get('about', function(){
+    // menampilkan teks ke browser
     return '<h1>Halo</h1>'. 
     '<h2>Selamat Datang di Perpustakaan Digital</h2>';
 });
@@ -107,3 +112,70 @@ Route::get('/nilai-ratarata', function () {
 
     return view('nilai_ratarata', compact('siswa', 'rata'));
 });
+
+// Test Model 
+Route::get('test-model', function(){
+    // mengambil semua data dari model Post
+    $data = App\Models\Post::all();
+    // menampilkan data ke browser
+    return $data;
+});
+
+Route::get('create-data', function(){
+    // membuat data baru
+    $data = App\Models\Post::create([
+        // 'field' => 'value'
+        'title' => 'Seringai',
+        'content' => 'Lorem ipsum',
+    ]);
+    // menampilkan data ke browser
+    return $data;
+});
+
+Route::get('show-data/{id}', function($id){
+    // Menampilkan data berdasarkan parameter id
+    $data = App\Models\Post::find($id);
+    // menampilkan data ke browser
+    return $data;
+});
+
+Route::get('edit-data/{id}', function($id){
+    // Mencari data berdasarkan parameter id
+    $data = App\Models\Post::find($id);
+    // mengupodate data berdasarkan parameter id
+    $data->title = "Membangun Project dengan Laravel";
+    // mengirim data ke database
+    $data->save();
+    // menampilkan data ke browser
+    return $data;
+});
+
+Route::get('delete-data/{id}', function($id){
+    // Menghapus data berdasarkan parameter id
+    $data = App\Models\Post::find($id);
+    // menghapus data
+    $data->delete();
+    // di kembalikan (alihkan) ke halaman test-model
+    return redirect('test-model');
+});
+
+Route::get('search/{cari}', function($query) {
+    // Mencari data berdasarkan title yang mirip seperti (like)
+    $data = App\Models\Post::where('title', 'like', '%' . $query . '%')->get();
+    return $data;
+});
+
+// pemanggilan url menggunakan controller
+Route::get('greetings', [MyController::class, 'hello']);
+Route::get('student', [MyController::class, 'siswa']);
+
+
+// post 
+Route::get('posts', [PostController::class, 'index']);
+
+
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

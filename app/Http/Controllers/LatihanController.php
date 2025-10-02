@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use Illuminate\Http\Request;
 
-class PostController extends Controller
+class LatihanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-    $post = Post::all();
-    return view('post.index', compact('post'));
+        //
     }
 
     /**
@@ -26,7 +25,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store()
+    public function store(Request $request)
     {
         //
     }
@@ -50,7 +49,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update()
+    public function update(Request $request, string $id)
     {
         //
     }
