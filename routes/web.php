@@ -46,10 +46,10 @@ Route::get('books/{judul}', function($a,){
     return 'Judul buku : '. $a;   
 }); 
 
-Route::get('post/{title}/{category}', function($a, $b){
-    //compact fungsinya untuk mengirim collection data array ke view
-    return view('post', ['judul' => $a, 'cat' => $b]);  
-});
+// Route::get('post/{title}/{category}', function($a, $b){
+//     //compact fungsinya untuk mengirim collection data array ke view
+//     return view('post', ['judul' => $a, 'cat' => $b]);  
+// });
 
 // route optional parameter
 Route::get('profil/{name?}', function($a = "Guest"){
@@ -169,13 +169,20 @@ Route::get('search/{cari}', function($query) {
 Route::get('greetings', [MyController::class, 'hello']);
 Route::get('student', [MyController::class, 'siswa']);
 
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // post 
-Route::get('posts', [PostController::class, 'index']);
+Route::get('post', [PostController::class, 'index'])->name('post.index');
 
+// tambah data post
+Route::get('post/create', [PostController::class, 'create'])->name('post.create');
+Route::post('post', [PostController::class, 'store'])->name('post.store');
 
+// edit data post
+Route::get('post/{id}/edit', [PostController::class, 'edit'])->name('post.edit');
+Route::put('post/{id}', [PostController::class, 'update'])->name('post.update');
 
+// hapus data
+Route::delete('post/{id}', [PostController::class, 'destroy'])->name('post.delete');
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
