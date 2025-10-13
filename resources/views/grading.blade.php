@@ -10,7 +10,7 @@
     {{ $n }}
     {{ $nilai }}
     @if ($nilai >= 90)
-        A 
+        A  
     @elseif ($nilai >= 80)
         B
     @elseif ($nilai >= 70)

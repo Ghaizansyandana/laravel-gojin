@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route; // memanggil class Route
 use App\Http\Controllers\MyController; // controllernya harus di import dulu / di panggil
 use App\Http\Controllers\PostController; // memanggil controller PostController
+use App\Http\Controllers\BiodataController; // memanggil controller BiodataController
 
 Route::get('/', function(){
     // memanggil view welcome.blade.php
@@ -183,6 +184,21 @@ Route::post('post', [PostController::class, 'store'])->name('post.store');
 Route::get('post/{id}/edit', [PostController::class, 'edit'])->name('post.edit');
 Route::put('post/{id}', [PostController::class, 'update'])->name('post.update');
 
+// show data
+Route::get('post/{id}', [PostController::class, 'show'])->name('post.show');
+
 // hapus data
 Route::delete('post/{id}', [PostController::class, 'destroy'])->name('post.delete');
 
+//
+Route::resource('produk', App\Http\Controllers\ProdukController::class)->middleware('auth');
+
+//
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+//
+Route::resource('biodata', App\Http\Controllers\BiodataController::class)->middleware('auth');
+
+//

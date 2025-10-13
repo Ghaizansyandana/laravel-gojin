@@ -15,9 +15,9 @@
                     <a href="{{ route('post.create') }}" class="btn btn-sm-primary" style="align:float-right">
                         Tambah data
                     </a>
-                    <div class="table-responsive py-4 my-4">
-                        <table border="1" cellpadding="8" border="1">
-                            <tr>
+                    <div class="table-responsive ">
+                        <table border="1" cellpadding="8" class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                            <tr >
                                 <th>No</th>
                                 <th>Title</th>
                                 <th>Content</th>
@@ -30,10 +30,13 @@
                                 <td>{{Str::limit($data->content, 100) }}</td>
                                 <th>
                                     <form action="{{ route('post.delete', $data->id) }}" method="post" style="display:inline-block">
-                                        @csrf
+                                        @csrf       
                                         @method('DELETE')
                                         <a href="{{ route('post.edit', $data->id) }}" class="btn btn-sm btn-success">
                                             Edit
+                                        </a>
+                                        <a href="{{ route('post.show', $data->id) }}" class="btn btn-sm btn-warning">
+                                            Show
                                         </a>
                                         <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Apakah kamu yakin?')">Delete</button>
                                     </form>
