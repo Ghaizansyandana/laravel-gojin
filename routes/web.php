@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route; // memanggil class Route
 use App\Http\Controllers\MyController; // controllernya harus di import dulu / di panggil
 use App\Http\Controllers\PostController; // memanggil controller PostController
 use App\Http\Controllers\BiodataController; // memanggil controller BiodataController
-
+use App\Http\Controllers\RelasiController;
+use App\Http\Controllers\HobiController;
+use App\Models\Mahasiswa;
+use App\Models\Wali; 
 Route::get('/', function(){
     // memanggil view welcome.blade.php
     return view('welcome');
@@ -202,3 +205,26 @@ Route::get('/dashboard', function () {
 Route::resource('biodata', App\Http\Controllers\BiodataController::class)->middleware('auth');
 
 //
+Route::get('/one-to-one', [RelasiController::class, 'index']);
+
+//
+Route::get('/wali-ke-mahasiswa', function () {
+    $wali = Wali::with('mahasiswa')->first();
+    return "{$wali->nama} adalah wali dari {$wali->mahasiswa->nama}";
+});
+
+//
+Route::get('/one-to-many', [RelasiController::class, 'OneToMany']);
+
+//
+Route::get('/mahasiswa-ke-dosen', function () {
+    $mhs = Mahasiswa::where('nim', '123456')->first();
+    return "{$mhs->nama} dibimbim oleh {$mhs->dosen->nama}";
+});
+
+//
+Route::get('/many-to-many', [HobiController::class, 'manyToMany']);
+
+//
+Route::get('eloquent', [RelasiController::class, 'eloquent']);
+

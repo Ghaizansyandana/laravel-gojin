@@ -68,7 +68,7 @@ class BiodataController extends Controller
 
     public function update(Request $request, $id)
     {
-        // ✅ Validasi form update
+        //  Validasi form update
         $this->validate($request, [
             'nama'       => 'required|string|max:100',
             'tgl_lahir'  => 'required|date',
