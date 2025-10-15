@@ -6,7 +6,7 @@
         <h2 class="text-center mb-4">Halo Eloquent 👋</h2>
 
         @foreach ($mahasiswa as $temp)
-            <div class="mb-4 p-4 border rounded-3 shadow-sm bg-white text-center">
+            <div class="mb-4 p-4 border rounded-3 shadow-sm bg-white ">
                 <h3 class="fw-bold mb-2">
                     {{ $temp->nama }}
                     <small class="text-muted">({{ $temp->nim }})</small>

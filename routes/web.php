@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController; // memanggil controller PostController
 use App\Http\Controllers\BiodataController; // memanggil controller BiodataController
 use App\Http\Controllers\RelasiController;
 use App\Http\Controllers\HobiController;
+use App\Http\Controllers\DosenController;
 use App\Models\Mahasiswa;
 use App\Models\Wali; 
 Route::get('/', function(){
@@ -227,4 +228,10 @@ Route::get('/many-to-many', [HobiController::class, 'manyToMany']);
 
 //
 Route::get('eloquent', [RelasiController::class, 'eloquent']);
+
+//
+Route::resource('dosen', DosenController::class);
+
+//
+Route::resource('hobi', HobiController::class);
 
