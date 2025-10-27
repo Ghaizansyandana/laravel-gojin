@@ -8,14 +8,16 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     */
+     */ 
+
     public function up(): void
     {
         Schema::create('walis', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->unsignedBigInteger('id_mahasiswa');
-            $table->foreign('id_mahasiswa')->references('id')->on('mahasiswas')->onDelete('cascade');
+            $table->string('nama_wali'); 
+            $table->text('alamat');      
+            // TAMBAHKAN BARIS INI:
+            $table->string('no_telepon')->nullable()->unique(); 
             $table->timestamps();
         });
     }

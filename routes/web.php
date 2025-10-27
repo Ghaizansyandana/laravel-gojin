@@ -239,3 +239,9 @@ Route::resource('hobi', HobiController::class);
 //
 Route::resource('mahasiswa', App\Http\Controllers\MahasiswaController::class);
 
+//
+use App\Http\Controllers\WaliController;
+
+// ... route-route lainnya
+
+Route::resource('wali', WaliController::class);
