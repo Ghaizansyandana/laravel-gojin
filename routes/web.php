@@ -7,6 +7,7 @@ use App\Http\Controllers\BiodataController; // memanggil controller BiodataContr
 use App\Http\Controllers\RelasiController;
 use App\Http\Controllers\HobiController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\MahasiswaController;
 use App\Models\Mahasiswa;
 use App\Models\Wali; 
 Route::get('/', function(){
@@ -234,4 +235,7 @@ Route::resource('dosen', DosenController::class);
 
 //
 Route::resource('hobi', HobiController::class);
+
+//
+Route::resource('mahasiswa', App\Http\Controllers\MahasiswaController::class);
 
