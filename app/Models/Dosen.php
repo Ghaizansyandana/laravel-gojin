@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dosen extends Model
 {
-    protected $table = 'dosen'; // 🔥 tambahkan baris ini!
+    protected $table = 'dosens'; // 🔥 tambahkan baris ini!
     protected $fillable = ['nama', 'nipd'];
 
     public function mahasiswas()

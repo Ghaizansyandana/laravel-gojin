@@ -2,25 +2,26 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Mahasiswa;
 use App\Models\Wali;
+// import model
+use Illuminate\Database\Seeder;
 
 class RelasiSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
         $mahasiswa = Mahasiswa::create([
-            'nama' => 'Ghaizan Aulia',
-            "nim"  => '123456'
+            'nama' => 'Candra Herdiansyah',
+            'nim'  => '123456',
         ]);
 
         Wali::create([
-            'nama' => 'pak gojin',
-            'id_mahasiswa' => $mahasiswa->id
+            'nama'         => 'Pak Herdi',
+            'id_mahasiswa' => $mahasiswa->id,
         ]);
     }
-}
+}   

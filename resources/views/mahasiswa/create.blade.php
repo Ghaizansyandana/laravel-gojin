@@ -47,7 +47,17 @@
                                 </span>
                             @enderror
                         </div>
-
+                        <div class="mb-3">
+                            <label for="">Pilih Hobi</label>
+                            <select name="hobi[]" class="form-control js-multiple" multiple>
+                                @foreach ($hobi as $data)
+                                    <option value="{{ $data->id }}"
+                                        {{ isset($mahasiswa) && in_array($data->id, $mahasiswa->hobis->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                        {{ $data->nama_hobi }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-block btn-primary">Simpan</button>
                         </div>

@@ -10,6 +10,13 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\MahasiswaController;
 use App\Models\Mahasiswa;
 use App\Models\Wali; 
+use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\DetailTransaksiController;
+
+
 Route::get('/', function(){
     // memanggil view welcome.blade.php
     return view('welcome');
@@ -245,3 +252,14 @@ use App\Http\Controllers\WaliController;
 // ... route-route lainnya
 
 Route::resource('wali', WaliController::class);
+
+//
+
+
+Route::resource('pelanggan', PelangganController::class);
+Route::resource('produk', ProdukController::class);
+Route::resource('transaksi', TransaksiController::class);
+Route::resource('pembayaran', PembayaranController::class);
+Route::resource('detail-transaksi', DetailTransaksiController::class);
+
+Route::get('/transaksi/{id}', [TransaksiController::class, 'show'])->name('transaksi.show');

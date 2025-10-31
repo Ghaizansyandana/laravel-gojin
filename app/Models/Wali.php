@@ -10,7 +10,7 @@ class Wali extends Model
     use HasFactory;
     
     protected $table = 'walis'; // Pastikan nama tabel benar
-
+    
     // Tambahkan properti $fillable untuk mengizinkan kolom-kolom ini diisi secara massal
     protected $fillable = [
         'nama_wali',

@@ -31,11 +31,12 @@ class HobiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_hobi' => 'required'
+            'nama_hobi' => 'required|string|max:255',
         ]);
 
         Hobi::create($request->all());
 
+        
         return redirect()->route('hobi.index')->with('success', 'Data hobi berhasil ditambahkan.');
     }
 

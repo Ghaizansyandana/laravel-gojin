@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
+use App\Models\Hobi;
 use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
@@ -24,11 +25,13 @@ class MahasiswaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $dosen = Dosen::all();
-        return view('mahasiswa.create', compact('dosen'));
-    }
+        public function create()
+        {
+            $dosen = \App\Models\Dosen::all();
+            $hobi = \App\Models\Hobi::all();
+
+            return view('mahasiswa.create', compact('dosen', 'hobi'));
+        }
 
     /**
      * Store a newly created resource in storage.
@@ -50,7 +53,10 @@ class MahasiswaController extends Controller
         $mahasiswa->id_dosen = $request->id_dosen;
         $mahasiswa->save();
 
+        // attach (melampirkan banyak data atau many to many)
+        $mahasiswa->hobis()->attach($request->hobi);
         return redirect()->route('mahasiswa.index');
+
     }
 
     /**
@@ -75,7 +81,8 @@ class MahasiswaController extends Controller
     {
         $mahasiswa = Mahasiswa::findOrFail($id);
         $dosen = Dosen::all();
-        return view('mahasiswa.edit', compact('mahasiswa', 'dosen'));
+        $hobi = Hobi::all();
+        return view('mahasiswa.edit', compact('mahasiswa', 'dosen', 'hobi'));
     }
 
     /**
@@ -100,6 +107,8 @@ class MahasiswaController extends Controller
         $mahasiswa->id_dosen = $request->id_dosen;
         $mahasiswa->save();
 
+        // sync memperbarui data yang diubah dari many to many
+        $mahasiswa->hobis()->sync($request->hobi);
         return redirect()->route('mahasiswa.index');
     }
 
@@ -112,8 +121,9 @@ class MahasiswaController extends Controller
     public function destroy(string $id)
     {
         $mahasiswa = Mahasiswa::findOrFail($id);
+        // detach (menghapus data yang terkait dari mahasiswa dan hobi)
+        $mahasiswa->hobis()->detach();   
         $mahasiswa->delete();
-
         return redirect()->route('mahasiswa.index');
     }
 }

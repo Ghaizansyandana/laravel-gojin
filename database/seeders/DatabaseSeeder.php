@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,8 +11,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        //pemanggilan class sample data
-        $this->call(PostSeeder::class);
-        $this->call(SiswaSeeder::class);
+        // Contoh: kalau nanti kamu punya seeder pelanggan atau produk, panggil di sini
+        $this->call(PostTableSeeder::class);
+
+
+        // Sementara biarkan kosong dulu
     }
 }

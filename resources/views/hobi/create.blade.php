@@ -12,7 +12,7 @@
         @csrf
         <div class="mb-3">
             <label>Nama hobi</label>
-            <input type="text" name="nama" class="form-control" required>
+            <input type="text" name="nama_hobi" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-success">Simpan</button>
         <a href="{{ route('hobi.index') }}" class="btn btn-secondary">Kembali</a>
