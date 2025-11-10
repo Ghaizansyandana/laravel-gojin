@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="float-start">
-                        {{ __('Dashboard') }}
+                        Edit Produk
                     </div>
                     <div class="float-end">
                         <a href="{{ route('produk.index') }}" class="btn btn-sm btn-outline-primary">Kembali</a>
@@ -21,9 +21,10 @@
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Nama Produk</label>
-                            <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
-                                value="{{ $produk->nama }}" placeholder="produk Name" required>
-                            @error('nama')
+                            <input type="text" class="form-control @error('nama_produk') is-invalid @enderror"
+                                name="nama_produk" value="{{ $produk->nama_produk }}" placeholder="produk Name"
+                                required>
+                            @error('nama_produk')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -39,28 +40,20 @@
                             </span>
                             @enderror
                         </div>
+
                         <div class="mb-3">
-                            <label class="form-label">Deskripsi</label>
-                            <textarea class="form-control" class="form-control @error('deskirpsi') is-invalid @enderror"
-                                name="deskripsi" rows="3" placeholder="deskirpsi"
-                                required>{{ $produk->deskripsi }}</textarea>
-                            @error('deskirpsi')
+                            <label class="form-label">Stok Produk</label>
+                            <input type="number" class="form-control @error('stok') is-invalid @enderror" name="stok"
+                                value="{{ $produk->stok }}" placeholder="Stok" required>
+                            @error('stok')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Image</label>
-                            <input type="file" class="form-control @error('image') is-invalid @enderror" name="image"
-                                value="{{ $produk->image }}"></input>
-                            @error('image')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
+
+
                         <button type="submit" class="btn btn-sm btn-primary">SIMPAN</button>
                         <button type="reset" class="btn btn-sm btn-warning">RESET</button>
                     </form>

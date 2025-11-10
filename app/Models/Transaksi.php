@@ -18,6 +18,16 @@ class Transaksi extends Model
         return $this->hasMany(DetailTransaksi::class);
     }
 
+    public function produks()
+    {
+        return $this->belongsToMany(
+            Produk::class,
+            'detail_transaksis',
+            'transaksi_id',
+            'produk_id'
+        )->withPivot('jumlah', 'subtotal')->withTimestamps();
+    }
+
     public function pembayaran()
     {
         return $this->hasOne(Pembayaran::class, 'transaksi_id');
