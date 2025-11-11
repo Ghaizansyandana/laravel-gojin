@@ -17,4 +17,17 @@ require __DIR__.'/../vendor/autoload.php';
 /** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-$app->handleRequest(Request::capture());
+try {
+    $app->handleRequest(Request::capture());
+} catch (Throwable $e) {
+    // Catch Phiki errors and return plain text
+    if (strpos(get_class($e), 'Phiki') !== false || 
+        strpos($e->getMessage(), 'PatternSearcher') !== false ||
+        strpos($e->getMessage(), 'syntax-highlight') !== false) {
+        http_response_code(500);
+        mb_internal_encoding('UTF-8');
+        echo 'Internal Server Error - Syntax Highlighter Issue';
+        exit(1);
+    }
+    throw $e;
+}

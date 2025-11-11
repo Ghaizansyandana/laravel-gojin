@@ -63,7 +63,7 @@
                 <div class="col-md-3">
                     <label class="form-label">Subtotal</label>
                     <input type="text" class="form-control subtotal" readonly
-                        value="Rp{{ number_format($prodTrans->pivot->sub_total, 0, ',', '.') }}">
+                        value="Rp{{ number_format($prodTrans->pivot->subtotal, 0, ',', '.') }}">
                 </div>
 
                 <div class="col-md-1 d-flex align-items-end">

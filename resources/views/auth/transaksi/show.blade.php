@@ -19,7 +19,7 @@
                 </tr>
                 <tr>
                     <th>Tanggal</th>
-                    <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d M Y H:i') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($transaksi->tanggal_transaksi)->format('d M Y H:i') }}</td>
                 </tr>
                 <tr>
                     <th>Pelanggan</th>
@@ -50,7 +50,7 @@
                         <td>{{ $prod->nama_produk }}</td>
                         <td>Rp {{ number_format($prod->harga, 0, ',', '.') }}</td>
                         <td>{{ $prod->pivot->jumlah }}</td>
-                        <td>Rp {{ number_format($prod->pivot->sub_total, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($prod->pivot->subtotal, 0, ',', '.') }}</td>
                     </tr>
                     @endforeach
                 </tbody>

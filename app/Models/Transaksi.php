@@ -30,7 +30,7 @@ class Transaksi extends Model
 
     public function pembayaran()
     {
-        return $this->hasOne(Pembayaran::class, 'transaksi_id');
+        return $this->hasOne(Pembayaran::class, 'id_transaksi');
     }
 
 }

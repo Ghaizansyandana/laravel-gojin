@@ -168,12 +168,35 @@ class TransaksiController extends Controller
 
     public function search(Request $request)
     {
-        $query     = $request->query('query');
-        $transaksi = Transaksi::with('pelanggan')
-            ->where('kode_transaksi', 'like', "%$query%")
-            ->get();
+        try {
+            $query     = $request->query('query');
+            if (!$query) {
+                return response()->json([]);
+            }
+            
+            $transaksi = Transaksi::with('pelanggan')
+                ->where('kode_transaksi', 'like', "%$query%")
+                ->limit(10)
+                ->get();
 
-        return response()->json($transaksi);
+            // Return only necessary fields to avoid serialization issues
+            $result = $transaksi->map(function($item) {
+                return [
+                    'id' => $item->id,
+                    'kode_transaksi' => $item->kode_transaksi,
+                    'total_harga' => $item->total_harga,
+                    'pelanggan' => [
+                        'id' => $item->pelanggan->id,
+                        'nama' => $item->pelanggan->nama
+                    ]
+                ];
+            });
+
+            return response()->json($result);
+        } catch (\Exception $e) {
+            \Log::error('Transaksi search error: ' . $e->getMessage());
+            return response()->json([], 200);
+        }
     }
 
 }

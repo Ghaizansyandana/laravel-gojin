@@ -9,19 +9,12 @@ return new class extends Migration
     
     public function up()
     {
-        Schema::table('pembayarans', function (Blueprint $table) {
-            if (!Schema::hasColumn('pembayarans', 'transaksi_id')) {
-                $table->foreignId('transaksi_id')->after('id')->constrained()->onDelete('cascade');
-            }
-        });
+        // This migration is no longer needed as the column is created in the initial migration
     }
 
     public function down()
     {
-        Schema::table('pembayarans', function (Blueprint $table) {
-            $table->dropForeign(['transaksi_id']);
-            $table->dropColumn('transaksi_id');
-        });
+        // No changes to rollback
     }
 
 };

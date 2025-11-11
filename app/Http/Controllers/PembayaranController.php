@@ -1,67 +1,118 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Pembayaran;
 use App\Models\Transaksi;
-use App\Models\Pelanggan;
+use Illuminate\Http\Request;
 
 class PembayaranController extends Controller
 {
-    /**
-     * Menampilkan daftar pembayaran
-     */
-    public function index()
+    // ✅ INDEX
+    public function index(Request $request)
     {
-        $pembayarans = Pembayaran::all();
-        return view('auth.pembayaran.index', compact('pembayarans'));
+        $search = $request->get('search');
+
+        $pembayarans = Pembayaran::with('transaksi')
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('transaksi', function ($q) use ($search) {
+                    $q->where('kode_transaksi', 'like', "%$search%");
+                });
+            })
+            ->latest()
+            ->paginate(10);
+
+        return view('auth.pembayaran.index', compact('pembayarans', 'search'));
     }
 
-    /**
-     * Menampilkan form create pembayaran
-     */
+    // ✅ CARI TRANSAKSI SEBELUM BAYAR
+    public function searchTransaksi(Request $request)
+    {
+        $kode      = $request->get('kode');
+        $transaksi = Transaksi::where('kode_transaksi', $kode)->first();
+
+        if (! $transaksi) {
+            return response()->json(['error' => 'Transaksi tidak ditemukan.'], 404);
+        }
+
+        return response()->json($transaksi);
+    }
+
+    // ✅ CREATE
     public function create()
     {
-        // Ambil transaksi yang belum dibayar (tidak memiliki relasi pembayaran)
-        $transaksis = Transaksi::doesntHave('pembayaran')->get();
-
-        // Ambil semua pelanggan
-        $pelanggans = Pelanggan::all();
-
-        return view('auth.pembayaran.create', compact('transaksis', 'pelanggans'));
+        return view('auth.pembayaran.create');
     }
 
-    /**
-     * Menyimpan data pembayaran
-     */
+    // ✅ STORE
     public function store(Request $request)
     {
         $request->validate([
-            'transaksi_id' => 'required|exists:transaksis,id',
-            'pelanggan_id' => 'required|exists:pelanggans,id',
-            'metode' => 'required|string',
-            'jumlah_bayar' => 'required|numeric|min:0',
+            'id_transaksi'      => 'required|exists:transaksis,id',
+            'tanggal_bayar'     => 'required|date',
+            'metode_pembayaran' => 'required|in:cash,credit,debit',
+            'jumlah_bayar'      => 'required|integer|min:0',
         ]);
 
-        // Ambil transaksi untuk menghitung kembalian
-        $transaksi = Transaksi::findOrFail($request->transaksi_id);
+        $transaksi = Transaksi::findOrFail($request->id_transaksi);
 
-        // Gunakan kolom total_harga dari transaksi
-        $total = $transaksi->total_harga ?? 0;
+        $kembalian = $request->jumlah_bayar - $transaksi->total_harga;
 
-        $kembalian = $request->jumlah_bayar - $total;
-
-        // Simpan pembayaran
         Pembayaran::create([
-            'transaksi_id' => $request->transaksi_id,
-            'pelanggan_id' => $request->pelanggan_id,
-            'metode' => $request->metode,
-            'jumlah_bayar' => $request->jumlah_bayar,
-            'kembalian' => $kembalian,
+            'id_transaksi'      => $transaksi->id,
+            'tanggal_bayar'     => $request->tanggal_bayar,
+            'metode_pembayaran' => $request->metode_pembayaran,
+            'jumlah_bayar'      => $request->jumlah_bayar,
+            'kembalian'         => max($kembalian, 0),
         ]);
 
-        return redirect()->route('pembayaran.index')
-                         ->with('success', 'Pembayaran berhasil disimpan!');
+        return redirect()->route('pembayaran.index')->with('success', 'Pembayaran berhasil disimpan!');
+    }
+
+    // ✅ SHOW
+    public function show($id)
+    {
+        $pembayaran = Pembayaran::with('transaksi.pelanggan', 'transaksi.produks')->findOrFail($id);
+        return view('auth.pembayaran.show', compact('pembayaran'));
+    }
+
+    // ✅ EDIT
+    public function edit($id)
+    {
+        $pembayaran = Pembayaran::with(['transaksi.pelanggan'])->findOrFail($id);
+        return view('auth.pembayaran.edit', compact('pembayaran'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'id_transaksi'      => 'required|exists:transaksis,id',
+            'tanggal_bayar'     => 'required|date',
+            'metode_pembayaran' => 'required|in:cash,credit,debit',
+            'jumlah_bayar'      => 'required|integer|min:0',
+        ]);
+
+        $pembayaran = Pembayaran::findOrFail($id);
+        $transaksi  = Transaksi::findOrFail($request->id_transaksi);
+
+        $kembalian = $request->jumlah_bayar - $transaksi->total_harga;
+
+        $pembayaran->update([
+            'id_transaksi'      => $transaksi->id,
+            'tanggal_bayar'     => $request->tanggal_bayar,
+            'metode_pembayaran' => $request->metode_pembayaran,
+            'jumlah_bayar'      => $request->jumlah_bayar,
+            'kembalian'         => max($kembalian, 0),
+        ]);
+
+        return redirect()->route('pembayaran.index')->with('success', 'Data pembayaran berhasil diperbarui!');
+    }
+
+    // ✅ DESTROY
+    public function destroy($id)
+    {
+        $pembayaran = Pembayaran::findOrFail($id);
+        $pembayaran->delete();
+
+        return redirect()->route('pembayaran.index')->with('success', 'Pembayaran berhasil dihapus!');
     }
 }

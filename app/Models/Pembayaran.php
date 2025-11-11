@@ -1,16 +1,20 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Pembayaran extends Model
 {
-    protected $fillable = ['transaksi_id', 'pelanggan_id', 'metode', 'jumlah_bayar', 'kembalian'];
+    protected $fillable = [
+        'id_transaksi',
+        'tanggal_bayar',
+        'metode_pembayaran',
+        'jumlah_bayar',
+        'kembalian',
+    ];
 
     public function transaksi()
     {
-        return $this->belongsTo(Transaksi::class);
+        return $this->belongsTo(Transaksi::class, 'id_transaksi', 'id');
     }
 }
-

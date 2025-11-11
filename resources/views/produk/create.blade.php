@@ -20,7 +20,7 @@
                         <div class="mb-3">
                             <label class="form-label">Nama Produk</label>
                             <input type="text" class="form-control @error('nama_produk') is-invalid @enderror"
-                                name="nama_produk" value="{{ old('nama_produk') }}" placeholder="produk Name" required>
+                                name="nama_produk" value="{{ old('nama_produk') }}" placeholder="Nama Produk" required>
                             @error('nama_produk')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -48,7 +48,6 @@
                             </span>
                             @enderror
                         </div>
-
 
                         <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
                         <button type="reset" class="btn btn-sm btn-warning">Reset</button>

@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProdukController extends Controller
 {
@@ -87,7 +89,9 @@ class ProdukController extends Controller
     public function destroy($id)
     {
         $produk = Produk::findOrFail($id);
-        Storage::disk('public')->delete($produk->image);
+        if ($produk->image) {
+            Storage::disk('public')->delete($produk->image);
+        }
         $produk->delete();
         return redirect()->route('produk.index');
 
